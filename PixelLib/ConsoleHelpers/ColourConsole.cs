@@ -6,7 +6,7 @@ namespace PixelLib.ConsoleHelpers
 	/// <summary>
 	/// Allows for far finer control of <see cref="BackgroundColour"/> and <see cref="ForegroundColour"/> settings.
 	/// </summary>
-	public class ColourConsole : CustomConsole
+	public sealed class ColourConsole : CustomConsole
 	{
 		public const char STRINGFORMAT_ESCAPE = '\\';
 		public const char STRINGFORMAT_STARTBLOCK = '{';
