@@ -22,7 +22,7 @@ namespace PixelLib.ExtensionMethods
 		{
 			if (max <= min)
 				throw new ArgumentOutOfRangeException (nameof (max), $"{nameof (max)} must be greater than {nameof (min)}!");
-			
+
 			// Working with ulong so that modulo works correctly with values > long.MaxValue.
 			ulong uRange = (ulong) (max - min);
 
