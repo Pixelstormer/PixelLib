@@ -39,5 +39,23 @@ namespace PixelLib.ExtensionMethods
 					return true;
 			return false;
 		}
+
+		/// <summary>
+		/// Checks whether or not <paramref name="array"/> contains a <see cref="string"/> that is equal to <paramref name="target"/>,
+		/// according to <paramref name="options"/>.
+		/// </summary>
+		/// <seealso cref="string.Equals(string, string, StringComparison)"/>
+		/// <param name="array">The given array to check for the presence of <paramref name="target"/> in.</param>
+		/// <param name="target">The given <see cref="string"/> to check for.</param>
+		/// <param name="options">The given <see cref="StringComparison"/> options by which to compare <paramref name="target"/> with the elements in <paramref name="array"/>.</param>
+		/// <returns>Whether or not <see cref="string.Equals(string, string, StringComparison)"/> returns <see langword="true"/>,
+		/// for <paramref name="target"/> and at least one element of <paramref name="array"/>, according to <paramref name="options"/>.</returns>
+		public static bool contains (this string[] array, string target, StringComparison options)
+		{
+			foreach (string item in array)
+				if (string.Equals (target, item, options))
+					return true;
+			return false;
+		}
 	}
 }
