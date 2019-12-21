@@ -39,8 +39,8 @@ namespace PixelLib.ConsoleHelpers
 		/// and <see cref="DEFAULT_FOREGROUNDCOLOUR"/> as the <see cref="ForegroundColour"/>.
 		/// </summary>
 		public ColourConsole ()
-			: this (DEFAULT_BACKGROUNDCOLOUR, DEFAULT_FOREGROUNDCOLOUR) { }
-
+			: this (DEFAULT_FOREGROUNDCOLOUR, DEFAULT_BACKGROUNDCOLOUR) { }
+		
 		/// <summary>
 		/// Instantiates a new wrapper, with <paramref name="backgroundColour"/> as the <see cref="BackgroundColour"/>,
 		/// and <paramref name="foregroundColour"/> as the <see cref="ForegroundColour"/>.
@@ -77,9 +77,9 @@ namespace PixelLib.ConsoleHelpers
 			base.ForegroundColour = ForegroundColour;
 			Clear ();
 		}
-
+		
 #pragma warning disable IDE0022 // Use block body for methods
-		private void handlePreWriteOperation (object sender, EventArgs e) => stageColours (BackgroundColour, ForegroundColour);
+		private void handlePreWriteOperation (object sender, EventArgs e) => stageColours (ForegroundColour, BackgroundColour);
 		private void handlePostWriteOperation (object sender, EventArgs e) => unstageColours ();
 #pragma warning restore IDE0022 // Use block body for methods
 
@@ -116,7 +116,7 @@ namespace PixelLib.ConsoleHelpers
 			// ------------------------------------------------------------------------------------------------
 
 			// If format doesn't specify a ConsoleColour to start with, default to the current colours.
-			if (!format.StartsWith ("{"))
+			if (!format.StartsWith (STRINGFORMAT_STARTBLOCK.ToString ()))
 				format = $"{{{ForegroundColour.ToString ()}:{BackgroundColour.ToString ()}}}" + format;
 
 			List<string> blocks = new List<string> (args.Length);
@@ -193,7 +193,7 @@ namespace PixelLib.ConsoleHelpers
 								throw new FormatException ($"{nameof (formatString)} recieved bad format string: '{format}'. (Got {nameof (STRINGFORMAT_ENDBLOCK)} char ('{STRINGFORMAT_ENDBLOCK}') before finding a {nameof (STRINGFORMAT_COLOURSEP)} char ('{STRINGFORMAT_COLOURSEP}') at index {i}.)");
 
 							if (string.IsNullOrWhiteSpace (currentBlock))
-								currentColours.background = ForegroundColour;
+								currentColours.background = BackgroundColour;
 							else if (int.TryParse (currentBlock, out int paramsIndex))
 							{
 								try
