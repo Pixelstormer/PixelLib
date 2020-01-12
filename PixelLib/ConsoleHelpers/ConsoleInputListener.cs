@@ -28,12 +28,11 @@ namespace PixelLib.ConsoleHelpers
 
 		/// <summary>
 		/// Start repeatedly listening for console input. Uses <see cref="CustomConsole.ReadLine"/>,
-		/// and blocks indefinitely until a subscriber of either the <see cref="preConsoleInputEvent"/> or <see cref="postConsoleInputEvent"/> requests a cancellation. 
+		/// and blocks indefinitely until a subscriber of either the <see cref="preConsoleInputEvent"/> or <see cref="postConsoleInputEvent"/> requests a cancellation.
 		/// </summary>
 		public void startListening ()
 		{
-			PostConsoleInputEventArgs postInputArgs;
-			do
+			while (true)
 			{
 				PreConsoleInputEventArgs preInputArgs = new PreConsoleInputEventArgs (console);
 				onPreConsoleInputEvent (preInputArgs);
@@ -41,11 +40,14 @@ namespace PixelLib.ConsoleHelpers
 				if (preInputArgs.cancelRequested)
 					break;
 
-				string input = console.ReadLine (); 
-				
-				postInputArgs = new PostConsoleInputEventArgs (console, input);
+				string input = console.ReadLine ();
+
+				PostConsoleInputEventArgs postInputArgs = new PostConsoleInputEventArgs (console, input);
 				onPostConsoleInputEvent (postInputArgs);
-			} while (!postInputArgs.cancelRequested);
+
+				if (postInputArgs.cancelRequested)
+					break;
+			}
 		}
 	}
 }

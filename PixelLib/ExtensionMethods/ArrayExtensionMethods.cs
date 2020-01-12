@@ -15,8 +15,11 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="array">The given array to check for the presence of <paramref name="target"/> in.</param>
 		/// <param name="target">The given element to check for.</param>
 		/// <returns>Whether or not <see cref="object.Equals(object, object)"/> returns <see langword="true"/>, for <paramref name="target"/> and at least one element of <paramref name="array"/>.</returns>
-		public static bool contains<T> (this T[] array, T target)
+		public static bool contains<T> (this T [] array, T target)
 		{
+			if (array == null)
+				throw new ArgumentNullException (nameof (array), $"Could not call method {nameof (contains)}: Array object reference was null.");
+
 			foreach (T item in array)
 				if (Equals (target, item))
 					return true;
@@ -32,8 +35,11 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="array">The given array to check for an object reference to <paramref name="target"/> in.</param>
 		/// <param name="target">The given element to check for an object reference to.</param>
 		/// <returns>Whether or not <see cref="object.ReferenceEquals(object, object)"/> returns <see langword="true"/>, for <paramref name="target"/> and at least one element of <paramref name="array"/>.</returns>
-		public static bool referenceContains<T> (this T[] array, T target)
+		public static bool referenceContains<T> (this T [] array, T target)
 		{
+			if (array == null)
+				throw new ArgumentNullException (nameof (array), $"Could not call method {nameof (referenceContains)}: Array object reference was null.");
+
 			foreach (T item in array)
 				if (ReferenceEquals (target, item))
 					return true;
@@ -50,8 +56,11 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="options">The given <see cref="StringComparison"/> options by which to compare <paramref name="target"/> with the elements in <paramref name="array"/>.</param>
 		/// <returns>Whether or not <see cref="string.Equals(string, string, StringComparison)"/> returns <see langword="true"/>,
 		/// for <paramref name="target"/> and at least one element of <paramref name="array"/>, according to <paramref name="options"/>.</returns>
-		public static bool contains (this string[] array, string target, StringComparison options)
+		public static bool contains (this string [] array, string target, StringComparison options)
 		{
+			if (array == null)
+				throw new ArgumentNullException (nameof (array), $"Could not call method {nameof (contains)}: Array object reference was null.");
+
 			foreach (string item in array)
 				if (string.Equals (target, item, options))
 					return true;

@@ -20,6 +20,9 @@ namespace PixelLib.ExtensionMethods
 #pragma warning disable IDE1006 // Naming Styles, allowing first letter of method names to be Upper Case to be consistent with the rest of Random's method names.
 		public static long NextLong (this Random random, long min, long max)
 		{
+			if (random == null)
+				throw new ArgumentNullException (nameof (random), $"Could not call method {nameof (NextLong)}: {nameof (Random)} object reference was null.");
+
 			if (max <= min)
 				throw new ArgumentOutOfRangeException (nameof (max), $"{nameof (max)} must be greater than {nameof (min)}!");
 
@@ -51,7 +54,7 @@ namespace PixelLib.ExtensionMethods
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="max"/> is less than or equal to <c>0</c>.</exception>
 		public static long NextLong (this Random random, long max)
 		{
-			return random.NextLong (0, max);
+			return NextLong (random, 0, max);
 		}
 
 		/// <summary>
@@ -62,7 +65,7 @@ namespace PixelLib.ExtensionMethods
 		/// <returns>A random <see cref="long"/>, between <see cref="long.MinValue"/> (Inclusive), and <see cref="long.MaxValue"/> (Exclusive).</returns>
 		public static long NextLong (this Random random)
 		{
-			return random.NextLong (long.MinValue, long.MaxValue);
+			return NextLong (random, long.MinValue, long.MaxValue);
 		}
 #pragma warning restore IDE1006 // Naming Styles
 	}

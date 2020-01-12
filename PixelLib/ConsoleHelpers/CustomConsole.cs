@@ -46,55 +46,52 @@ namespace PixelLib.ConsoleHelpers
 		public virtual bool KeyAvailable => Console.KeyAvailable;
 		public virtual bool NumberLock => Console.NumberLock;
 		public virtual bool CapsLock => Console.CapsLock;
-
+		
 		/// <summary>
 		/// Invoked whenever the <see cref="Console.CancelKeyPress"/> event is invoked, by default.
 		/// </summary>
-		public virtual event ConsoleCancelEventHandler CancelKeyPressEvent;
+		public virtual event ConsoleCancelEventHandler CancelKeyPress;
 
 		/// <summary>
 		/// Invoked just before <see cref="Write{T}(T)"/>, or any of its overloads, gets called.
 		/// </summary>
-		protected virtual event EventHandler PreWriteEvent;
+		public virtual event EventHandler preWriteEvent;
 
 		/// <summary>
 		/// Invoked just after <see cref="Write{T}(T)"/>, or any of its overloads, returns.
 		/// </summary>
-		protected virtual event EventHandler PostWriteEvent;
+		public virtual event EventHandler postWriteEvent;
 
 		/// <summary>
 		/// Invoked just before <see cref="WriteLine"/>, or any of its overloads, gets called.
 		/// </summary>
-		protected virtual event EventHandler PreWriteLineEvent;
+		public virtual event EventHandler preWriteLineEvent;
 
 		/// <summary>
 		/// Invoked just after <see cref="WriteLine"/>, or any of its overloads, returns.
 		/// </summary>
-		protected virtual event EventHandler PostWriteLineEvent;
+		public virtual event EventHandler postWriteLineEvent;
 
 		/// <summary>
 		/// Invoked just before <see cref="Read"/>, <see cref="ReadKey(bool)"/> or <see cref="ReadLine"/> gets called.
 		/// </summary>
-		protected virtual event EventHandler PreReadEvent;
+		public virtual event EventHandler preReadEvent;
 
 		/// <summary>
 		/// Invoked just after <see cref="Read"/>, <see cref="ReadKey(bool)"/> or <see cref="ReadLine"/> stops blocking and returns.
 		/// </summary>
-		protected virtual event EventHandler PostReadEvent;
+		public virtual event EventHandler postReadEvent;
 
-		public CustomConsole ()
-		{
-			Console.CancelKeyPress += onRaiseConsoleCancelKeyPress;
-		}
+		public CustomConsole () { Console.CancelKeyPress += onRaiseConsoleCancelKeyPress; }
 
 #pragma warning disable IDE0022 // Use block body for methods
-		protected virtual void onRaiseConsoleCancelKeyPress (object sender, ConsoleCancelEventArgs e) => CancelKeyPressEvent?.Invoke (sender, e);
-		protected virtual void onPreWriteEvent () => PreWriteEvent?.Invoke (this, EventArgs.Empty);
-		protected virtual void onPostWriteEvent () => PostWriteEvent?.Invoke (this, EventArgs.Empty);
-		protected virtual void onPreWriteLineEvent () => PreWriteLineEvent?.Invoke (this, EventArgs.Empty);
-		protected virtual void onPostWriteLineEvent () => PostWriteLineEvent?.Invoke (this, EventArgs.Empty);
-		protected virtual void onPreReadEvent () => PreReadEvent?.Invoke (this, EventArgs.Empty);
-		protected virtual void onPostReadEvent () => PostReadEvent?.Invoke (this, EventArgs.Empty);
+		protected virtual void onRaiseConsoleCancelKeyPress (object sender, ConsoleCancelEventArgs e) => CancelKeyPress?.Invoke (sender, e);
+		protected virtual void onPreWriteEvent () => preWriteEvent?.Invoke (this, EventArgs.Empty);
+		protected virtual void onPostWriteEvent () => postWriteEvent?.Invoke (this, EventArgs.Empty);
+		protected virtual void onPreWriteLineEvent () => preWriteLineEvent?.Invoke (this, EventArgs.Empty);
+		protected virtual void onPostWriteLineEvent () => postWriteLineEvent?.Invoke (this, EventArgs.Empty);
+		protected virtual void onPreReadEvent () => preReadEvent?.Invoke (this, EventArgs.Empty);
+		protected virtual void onPostReadEvent () => postReadEvent?.Invoke (this, EventArgs.Empty);
 
 		public virtual Stream OpenStandardError () => Console.OpenStandardError ();
 		public virtual Stream OpenStandardError (int bufferSize) => Console.OpenStandardError (bufferSize);
@@ -116,21 +113,21 @@ namespace PixelLib.ConsoleHelpers
 		public virtual void SetWindowSize (int width, int height) => Console.SetWindowSize (width, height);
 
 		public virtual void Write<T> (T value) { onPreWriteEvent (); Console.Write (value); onPostWriteEvent (); }
-		public virtual void Write (char[] buffer) { onPreWriteEvent (); Console.Write (buffer); onPostWriteEvent (); }
-		public virtual void Write (char[] buffer, int index, int count) { onPreWriteEvent (); Console.Write (buffer, index, count); onPostWriteEvent (); }
-		public virtual void Write (string format, params object[] arg) { onPreWriteEvent (); Console.Write (format, arg); onPostWriteEvent (); }
+		public virtual void Write (char [] buffer) { onPreWriteEvent (); Console.Write (buffer); onPostWriteEvent (); }
+		public virtual void Write (char [] buffer, int index, int count) { onPreWriteEvent (); Console.Write (buffer, index, count); onPostWriteEvent (); }
+		public virtual void Write (string format, params object [] arg) { onPreWriteEvent (); Console.Write (format, arg); onPostWriteEvent (); }
 
 		public virtual void WriteLine () { onPreWriteLineEvent (); Console.WriteLine (); onPostWriteLineEvent (); }
 		public virtual void WriteLine<T> (T value) { onPreWriteLineEvent (); Console.WriteLine (value); onPostWriteLineEvent (); }
-		public virtual void WriteLine (char[] buffer) { onPreWriteLineEvent (); Console.WriteLine (buffer); onPostWriteLineEvent (); }
-		public virtual void WriteLine (char[] buffer, int index, int count) { onPreWriteLineEvent (); Console.WriteLine (buffer, index, count); onPostWriteLineEvent (); }
-		public virtual void WriteLine (string format, params object[] arg) { onPreWriteLineEvent (); Console.WriteLine (format, arg); onPostWriteLineEvent (); }
+		public virtual void WriteLine (char [] buffer) { onPreWriteLineEvent (); Console.WriteLine (buffer); onPostWriteLineEvent (); }
+		public virtual void WriteLine (char [] buffer, int index, int count) { onPreWriteLineEvent (); Console.WriteLine (buffer, index, count); onPostWriteLineEvent (); }
+		public virtual void WriteLine (string format, params object [] arg) { onPreWriteLineEvent (); Console.WriteLine (format, arg); onPostWriteLineEvent (); }
 
 		public virtual void MoveBufferArea (int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop)
 			=> Console.MoveBufferArea (sourceLeft, sourceTop, sourceWidth, sourceHeight, targetLeft, targetTop);
 
-		public virtual void MoveBufferArea (int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop, char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
-			=> Console.MoveBufferArea (sourceLeft, sourceTop, sourceWidth, sourceHeight, targetLeft, targetTop, sourceChar, sourceForeColor, sourceBackColor);
+		public virtual void MoveBufferArea (int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop, char sourceChar, ConsoleColor sourceForeColour, ConsoleColor sourceBackColour)
+			=> Console.MoveBufferArea (sourceLeft, sourceTop, sourceWidth, sourceHeight, targetLeft, targetTop, sourceChar, sourceForeColour, sourceBackColour);
 #pragma warning restore IDE0022 // Use block body for methods
 
 		public virtual int Read ()
@@ -141,7 +138,12 @@ namespace PixelLib.ConsoleHelpers
 			return result;
 		}
 
-		public virtual ConsoleKeyInfo ReadKey (bool intercept = false)
+		public virtual ConsoleKeyInfo ReadKey ()
+		{
+			return ReadKey (false);
+		}
+
+		public virtual ConsoleKeyInfo ReadKey (bool intercept)
 		{
 			onPreReadEvent ();
 			ConsoleKeyInfo result = Console.ReadKey (intercept);
