@@ -3,7 +3,7 @@
 namespace PixelLib.ExtensionMethods
 {
 	/// <summary>
-	/// A set of extension methods to the <see cref="string"/> class, to allow for randomised manipulation.
+	/// A set of extension methods to the <see cref="string"/> class.
 	/// </summary>
 	public static class StringExtensionMethods
 	{
@@ -14,6 +14,7 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="toShuffle">The given <see cref="string"/> to be shuffled.</param>
 		/// <param name="random">The given <see cref="Random"/> to use.</param>
 		/// <returns>A copy of <paramref name="toShuffle"/>, with the positions of each <see cref="char"/> randomised using a <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">Fisher-Yates shuffle</a>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when either <paramref name="toShuffle"/> or <paramref name="random"/> are <see langword="null"/>.</exception>
 		public static string shuffle (this string toShuffle, Random random)
 		{
 			if (toShuffle == null)
@@ -44,6 +45,7 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="random">The given <see cref="Random"/> instance to use.</param>
 		/// <param name="length">The length of the result.</param>
 		/// <returns>A string of length <paramref name="length"/>, consisting of randomly selected <see cref="char"/>s from <paramref name="toSlice"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when either <paramref name="toSlice"/> or <paramref name="random"/> are <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="length"/> is less then <c>0</c></exception>
 		public static string randomSlice (this string toSlice, Random random, int length)
 		{
@@ -70,6 +72,7 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="toSlice">The given <see cref="string"/> used to specify the <see cref="string.Length"/> of the output, and to select <see cref="char"/>s from.</param>
 		/// <param name="random">The given <see cref="Random"/> instance to use.</param>
 		/// <returns>A string of the same <see cref="string.Length"/> as <paramref name="toSlice"/>, consisting of randomly selected <see cref="char"/>s from <paramref name="toSlice"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when either <paramref name="toSlice"/> or <paramref name="random"/> are <see langword="null"/>.</exception>
 		public static string randomSlice (this string toSlice, Random random)
 		{
 			if (toSlice == null)

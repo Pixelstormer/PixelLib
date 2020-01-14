@@ -9,55 +9,83 @@ namespace PixelLib.ConsoleHelpers
 	/// </summary>
 	public sealed class ColourConsole : CustomConsole
 	{
+		/// <summary>
+		/// Escapes a character in a Colour-Formatted string. Can be used to escape itself, and does not show up in the resulting string otherwise.
+		/// </summary>
 		public const char STRINGFORMAT_ESCAPE = '\\';
-		public const char STRINGFORMAT_STARTBLOCK = '{';
-		public const char STRINGFORMAT_ENDBLOCK = '}';
-		public const char STRINGFORMAT_COLOURSEP = ':';
 
-		private const ConsoleColor DEFAULT_BACKGROUNDCOLOUR = ConsoleColor.Black;
+		/// <summary>
+		/// Indicates the start of a colour format block, unless escaped by a <see cref="STRINGFORMAT_ESCAPE"/> char.
+		/// </summary>
+		public const char STRINGFORMAT_STARTBLOCK = '{';
+
+		/// <summary>
+		/// Indicates the end of a colour format block, unless escaped by a <see cref="STRINGFORMAT_ENDBLOCK"/> char.
+		/// </summary>
+		public const char STRINGFORMAT_ENDBLOCK = '}';
+
+		/// <summary>
+		/// Indicates the end of the Foreground colour definition and the start of the Background colour definition within a colour format block, unless escaped by a <see cref="STRINGFORMAT_ENDBLOCK"/> char.
+		/// </summary>
+		public const char STRINGFORMAT_COLOURSEP = ':';
+		
+		/// <summary>
+		/// The default-default foreground colour, used as the default foreground colour if none is passed to the constructor.
+		/// </summary>
 		private const ConsoleColor DEFAULT_FOREGROUNDCOLOUR = ConsoleColor.White;
 
-		private ConsoleColor defaultBackgroundColour { get; }
+		/// <summary>
+		/// The default-default background colour, used as the default background colour if none is passed to the constructor.
+		/// </summary>
+		private const ConsoleColor DEFAULT_BACKGROUNDCOLOUR = ConsoleColor.Black;
+		
+		/// <summary>
+		/// The default foreground colour, as passed into the constructor. Used when <see cref="ResetColour"/> is called.
+		/// </summary>
 		private ConsoleColor defaultForegroundColour { get; }
 
-		private ConsoleColor previousBackgroundColour { get; set; }
-		private ConsoleColor previousForegroundColour { get; set; }
+		/// <summary>
+		/// The default background colour, as passed into the constructor. Used when <see cref="ResetColour"/> is called.
+		/// </summary>
+		private ConsoleColor defaultBackgroundColour { get; }
 
+		private ConsoleColor previousForegroundColour { get; set; }
+		private ConsoleColor previousBackgroundColour { get; set; }
 		private bool isStaged;
 
 		/// <summary>
-		/// The <see cref="ConsoleColor"/> of any text printed by this wrapper.
-		/// </summary>
-		public override ConsoleColor BackgroundColour { get; set; }
-
-		/// <summary>
-		/// The <see cref="ConsoleColor"/> of any text printed by this wrapper.
+		/// The current foreground <see cref="ConsoleColor"/> of any text printed by this wrapper.
 		/// </summary>
 		public override ConsoleColor ForegroundColour { get; set; }
 
 		/// <summary>
-		/// Instantiates a new wrapper, with <see cref="DEFAULT_BACKGROUNDCOLOUR"/> as the <see cref="BackgroundColour"/>,
-		/// and <see cref="DEFAULT_FOREGROUNDCOLOUR"/> as the <see cref="ForegroundColour"/>.
+		/// The current background <see cref="ConsoleColor"/> of any text printed by this wrapper.
+		/// </summary>
+		public override ConsoleColor BackgroundColour { get; set; }
+
+		/// <summary>
+		/// Instantiates a new wrapper, with <see cref="DEFAULT_FOREGROUNDCOLOUR"/> as the <see cref="ForegroundColour"/>,
+		/// and <see cref="DEFAULT_BACKGROUNDCOLOUR"/> as the <see cref="BackgroundColour"/>.
 		/// </summary>
 		public ColourConsole ()
 			: this (DEFAULT_FOREGROUNDCOLOUR, DEFAULT_BACKGROUNDCOLOUR) { }
-		
+
 		/// <summary>
-		/// Instantiates a new wrapper, with <paramref name="backgroundColour"/> as the <see cref="BackgroundColour"/>,
-		/// and <paramref name="foregroundColour"/> as the <see cref="ForegroundColour"/>.
+		/// Instantiates a new wrapper, with <paramref name="foregroundColour"/> as the <see cref="ForegroundColour"/>,
+		/// and <paramref name="backgroundColour"/> as the <see cref="BackgroundColour"/>.
 		/// </summary>
-		/// <param name="backgroundColour">The <see cref="BackgroundColour"/> this wrapper will use then printing text.</param>
 		/// <param name="foregroundColour">The <see cref="ForegroundColour"/> this wrapper will use when printing text.</param>
+		/// <param name="backgroundColour">The <see cref="BackgroundColour"/> this wrapper will use then printing text.</param>
 		public ColourConsole (ConsoleColor foregroundColour, ConsoleColor backgroundColour)
 		{
-			previousBackgroundColour = base.BackgroundColour;
 			previousForegroundColour = base.ForegroundColour;
+			previousBackgroundColour = base.BackgroundColour;
 
-			defaultBackgroundColour = backgroundColour;
 			defaultForegroundColour = foregroundColour;
+			defaultBackgroundColour = backgroundColour;
 
-			BackgroundColour = backgroundColour;
 			ForegroundColour = foregroundColour;
+			BackgroundColour = backgroundColour;
 
 			preWriteEvent += handlePreWriteOperation;
 			preWriteLineEvent += handlePreWriteOperation;
@@ -66,14 +94,14 @@ namespace PixelLib.ConsoleHelpers
 			postWriteLineEvent += handlePostWriteOperation;
 		}
 		
-#pragma warning disable IDE0022 // Use block body for methods
+#pragma warning disable IDE0022 // Use block body for methods - Methods that do nothing but call another method can be simplified.
 		private void handlePreWriteOperation (object sender, EventArgs e) => stageColours (ForegroundColour, BackgroundColour);
 		private void handlePostWriteOperation (object sender, EventArgs e) => unstageColours ();
 #pragma warning restore IDE0022 // Use block body for methods
 
 		/// <summary>
-		/// Sets the <see cref="CustomConsole"/>'s <see cref="CustomConsole.BackgroundColor"/> and <see cref="CustomConsole.ForegroundColor"/>
-		/// to this wrapper's <see cref="BackgroundColour"/> and <see cref="ForegroundColour"/>,
+		/// Sets the <see cref="CustomConsole"/>'s <see cref="CustomConsole.ForegroundColor"/> and <see cref="CustomConsole.BackgroundColor"/>
+		/// to this wrapper's <see cref="ForegroundColour"/> and <see cref="BackgroundColour"/>,
 		/// before clearing the <see cref="CustomConsole"/> with <see cref="CustomConsole.Clear"/>
 		/// to set the <see cref="ConsoleColor"/> of the entire console window to this wrapper's <see cref="BackgroundColour"/>.
 		/// </summary>
@@ -89,20 +117,26 @@ namespace PixelLib.ConsoleHelpers
 			if (isStaged)
 				return;
 
-			previousBackgroundColour = base.BackgroundColour;
 			previousForegroundColour = base.ForegroundColour;
-			base.BackgroundColour = background;
+			previousBackgroundColour = base.BackgroundColour;
 			base.ForegroundColour = foreground;
+			base.BackgroundColour = background;
 			isStaged = true;
 		}
 
 		private void unstageColours ()
 		{
-			base.BackgroundColour = previousBackgroundColour;
 			base.ForegroundColour = previousForegroundColour;
+			base.BackgroundColour = previousBackgroundColour;
 			isStaged = false;
 		}
 
+		/// <summary>
+		/// Converts a string to an array of <see cref="ConsoleText"/> structs.
+		/// </summary>
+		/// <param name="toFormat">The string to be formatted.</param>
+		/// <param name="args">A params array of <see cref="ConsoleColor"/>s that <paramref name="toFormat"/> can index into.</param>
+		/// <returns></returns>
 		private ConsoleText [] formatString (string toFormat, params ConsoleColor [] args)
 		{
 			// If format doesn't specify a ConsoleColour to start with, default to the current colours.
@@ -286,6 +320,14 @@ namespace PixelLib.ConsoleHelpers
 		return result;
 		*/
 
+		/// <summary>
+		/// Parses the given <see cref="string"/> into a <see cref="ConsoleText"/> struct.
+		/// </summary>
+		/// <param name="toParse">The <see cref="string"/> to be parsed.</param>
+		/// <param name="args">A params array of <see cref="ConsoleColor"/>s to be indexed into by <paramref name="toParse"/>.</param>
+		/// <returns>A <see cref="ConsoleText"/> struct created from <paramref name="toParse"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="toParse"/> is <see langword="null"/>.</exception>
+		/// <exception cref="FormatException">Thrown when <paramref name="toParse"/> is not a valid Colour format block.</exception>
 		private ConsoleText parseBlock (string toParse, params ConsoleColor [] args)
 		{
 			if (toParse == null)
@@ -313,6 +355,13 @@ namespace PixelLib.ConsoleHelpers
 			return new ConsoleText (foregroundColour, backgroundColour, remainingText);
 		}
 
+		/// <summary>
+		/// Creates a <see cref="ConsoleColor"/> from a <see cref="string"/>.
+		/// </summary>
+		/// <param name="from">The <see cref="string"/> to create a <see cref="ConsoleColor"/> from.</param>
+		/// <param name="isForeground">Whether or not <paramref name="from"/> should be interpreted as a Foreground colour or Background colour.</param>
+		/// <param name="args">A params array of <see cref="ConsoleColor"/>s that can be indexed into by <paramref name="from"/>.</param>
+		/// <returns>A <see cref="ConsoleColor"/> created from <paramref name="from"/>.</returns>
 		private ConsoleColor colourFromString (string from, bool isForeground, params ConsoleColor [] args)
 		{
 #pragma warning disable IDE0046 // Convert to conditional expression - Nested conditional expressions are ugly.
@@ -324,6 +373,12 @@ namespace PixelLib.ConsoleHelpers
 		}
 
 #pragma warning disable IDE1006 // Naming Styles - Method overloads imitating the naming styles of System.Console.
+
+		/// <summary>
+		/// Writes the colour-formatted representation of the specified <see cref="string"/> value to the standard output stream.
+		/// </summary>
+		/// <param name="format">The <see cref="string"/> to be formatted and written.</param>
+		/// <param name="args">A params array of <see cref="ConsoleColor"/>s that <paramref name="format"/> can index into.</param>
 		public void Write (string format, params ConsoleColor [] args)
 		{
 			foreach (ConsoleText textBlock in formatString (format, args))
@@ -333,6 +388,11 @@ namespace PixelLib.ConsoleHelpers
 			}
 		}
 
+		/// <summary>
+		/// Writes the colour-formatted representation of the specified <see cref="string"/> value to the standard output stream, followed by the current line terminator.
+		/// </summary>
+		/// <param name="format">The <see cref="string"/> to be formatted and written.</param>
+		/// <param name="args">A params array of <see cref="ConsoleColor"/>s that <paramref name="format"/> can index into.</param>
 		public void WriteLine (string format, params ConsoleColor [] args)
 		{
 			foreach (ConsoleText textBlock in formatString (format, args))
@@ -344,40 +404,76 @@ namespace PixelLib.ConsoleHelpers
 			WriteLine ();
 		}
 
+		/// <summary>
+		/// Reads the next character from the standard input stream, formatting the displayed input according to the given <see cref="ConsoleColor"/>s.
+		/// </summary>
+		/// <param name="foregroundColour">The foreground colour to display the typed character with.</param>
+		/// <param name="backgroundColour">The background colour to display the typed character with.</param>
+		/// <returns>The next character from the input stream, or negative one (-1) if there are currently no more characters to be read.</returns>
 		public int Read (ConsoleColor foregroundColour, ConsoleColor backgroundColour)
 		{
 			stageColours (foregroundColour, backgroundColour);
 			return Read ();
 		}
 
+		/// <summary>
+		/// Obtains the next character or function key pressed by the user. The pressed key is displayed in the console window, and formatted according to the given <see cref="ConsoleColor"/>s.
+		/// </summary>
+		/// <param name="foregroundColour">The foreground colour to display the typed character or function key with.</param>
+		/// <param name="backgroundColour">The background colour to display the typed character or function key with.</param>
+		/// <returns>An object that describes the <see cref="ConsoleKey"/> constant and Unicode character, if any, that correspond to the pressed console key. The <see cref="ConsoleKeyInfo"/> object also describes, in a bitwise combination of <see cref="ConsoleModifiers"/> values, whether one or more Shift, Alt, or Ctrl modifier keys was pressed simultaneously with the console key.</returns>
 		public ConsoleKeyInfo ReadKey (ConsoleColor foregroundColour, ConsoleColor backgroundColour)
 		{
 			return ReadKey (foregroundColour, backgroundColour, false);
 		}
 
+		/// <summary>
+		/// Obtains the next character or function key pressed by the user. The pressed key is optionally displayed in the console window, and formatted according to the given <see cref="ConsoleColor"/>s.
+		/// </summary>
+		/// <param name="foregroundColour">The foreground colour to display the typed character or function key with.</param>
+		/// <param name="backgroundColour">The background colour to display the typed character or function key with.</param>
+		/// <param name="intercept">Determines whether to display the pressed key in the console window. <see langword="true"/> to not display the pressed key; otherwise, <see langword="false"/>.</param>
+		/// <returns>An object that describes the <see cref="ConsoleKey"/> constant and Unicode character, if any, that correspond to the pressed console key. The <see cref="ConsoleKeyInfo"/> object also describes, in a bitwise combination of <see cref="ConsoleModifiers"/> values, whether one or more Shift, Alt, or Ctrl modifier keys was pressed simultaneously with the console key.</returns>
 		public ConsoleKeyInfo ReadKey (ConsoleColor foregroundColour, ConsoleColor backgroundColour, bool intercept)
 		{
 			stageColours (foregroundColour, backgroundColour);
 			return ReadKey (intercept);
 		}
 
+		/// <summary>
+		/// Reads the next line of characters from the standard input stream, and formats the displayed text according to the given <see cref="ConsoleColor"/>s.
+		/// </summary>
+		/// <param name="foregroundColour">The foreground colour to display the typed character or function key with.</param>
+		/// <param name="backgroundColour">The background colour to display the typed character or function key with.</param>
+		/// <returns>The next line of characters from the input stream, or <see langword="null"/> if no more lines are available.</returns>
 		public string ReadLine (ConsoleColor foregroundColour, ConsoleColor backgroundColour)
 		{
 			stageColours (foregroundColour, backgroundColour);
 			return ReadLine ();
 		}
 
+		/// <summary>
+		/// Sets this <see cref="ColourConsole"/>'s <see cref="ForegroundColour"/> and <see cref="BackgroundColour"/> to its <see cref="defaultForegroundColour"/> and <see cref="defaultBackgroundColour"/>.
+		/// </summary>
 		public override void ResetColour ()
 		{
-			BackgroundColour = defaultBackgroundColour;
 			ForegroundColour = defaultForegroundColour;
+			BackgroundColour = defaultBackgroundColour;
 		}
 #pragma warning restore IDE1006 // Naming Styles
 
-		// Rule CA1305 triggers on the string interpolation for the FormatException within the catch block, but not on any of the other similar string interpolations in the solution, for some reason.
-		// From: https://docs.microsoft.com/en-gb/visualstudio/code-quality/ca1305?view=vs-2017#rule-description "If the value will be displayed to the user, use the current culture."
-		// As this project is a class library, the 'user' is a developer using the library in their own project(s). If they misuse the library, causing the exception to be thrown,
-		// the exception message (The guilty string interpolation) will be displayed to the user (The developer). So this is fine, as 'raw' string interpolation defaults to the Current Culture.
+		/// <summary>
+		/// Creates a <see cref="ConsoleColor"/> from a <see cref="string"/>.
+		/// </summary>
+		/// <remarks><para>Rule CA1305 triggers on the string interpolation for the <see cref="FormatException"/> within the catch block, but not on any of the other similar string interpolations in the solution, for some reason.</para>
+		/// <para>From: https://docs.microsoft.com/en-gb/visualstudio/code-quality/ca1305?view=vs-2017#rule-description "If the value will be displayed to the user, use the current culture."</para>
+		/// As this project is a class library, the 'user' is a developer using the library in their own project(s). If they misuse the library, causing the exception to be thrown,
+		/// the exception message (The guilty string interpolation) will be displayed to the user (The developer). So this is fine, as 'raw' string interpolation defaults to the Current Culture.</remarks>
+		/// <param name="from">The <see cref="string"/> to create a <see cref="ConsoleColor"/> from.</param>
+		/// <param name="args">A params array of <see cref="ConsoleColor"/>s that can be indexed into by <paramref name="from"/>.</param>
+		/// <returns>A <see cref="ConsoleColor"/> created from <paramref name="from"/>.</returns>
+		/// <exception cref="ArgumentException">Thrown when <see cref="string.IsNullOrWhiteSpace(string)"/> return true on <paramref name="from"/>.</exception>
+		/// <exception cref="FormatException">Thrown when <paramref name="from"/> can not be converted to a <see cref="ConsoleColor"/>.</exception>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]
 		private static ConsoleColor colourFromString (string from, params ConsoleColor [] args)
 		{
@@ -396,6 +492,9 @@ namespace PixelLib.ConsoleHelpers
 				throw new FormatException ($"The {nameof (ConsoleColor)} '{from}' does not exist.");
 		}
 
+		/// <summary>
+		/// Represents a <see cref="string"/> that has a foreground colour and a background colour.
+		/// </summary>
 		private struct ConsoleText : IEquatable<ConsoleText>
 		{
 			public readonly ConsoleColor foregroundColour;

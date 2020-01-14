@@ -3,7 +3,7 @@
 namespace PixelLib.ExtensionMethods
 {
 	/// <summary>
-	/// A set of extension methods to Arrays, to allow for concisely checking if they contain a given value.
+	/// A set of extension methods for Arrays.
 	/// </summary>
 	public static class ArrayExtensionMethods
 	{
@@ -15,6 +15,7 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="array">The given array to check for the presence of <paramref name="target"/> in.</param>
 		/// <param name="target">The given element to check for.</param>
 		/// <returns>Whether or not <see cref="object.Equals(object, object)"/> returns <see langword="true"/>, for <paramref name="target"/> and at least one element of <paramref name="array"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array"/> is <see langword="null"/>.</exception>
 		public static bool contains<T> (this T [] array, T target)
 		{
 			if (array == null)
@@ -35,6 +36,7 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="array">The given array to check for an object reference to <paramref name="target"/> in.</param>
 		/// <param name="target">The given element to check for an object reference to.</param>
 		/// <returns>Whether or not <see cref="object.ReferenceEquals(object, object)"/> returns <see langword="true"/>, for <paramref name="target"/> and at least one element of <paramref name="array"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array"/> is <see langword="null"/>.</exception>
 		public static bool referenceContains<T> (this T [] array, T target)
 		{
 			if (array == null)
@@ -56,6 +58,7 @@ namespace PixelLib.ExtensionMethods
 		/// <param name="options">The given <see cref="StringComparison"/> options by which to compare <paramref name="target"/> with the elements in <paramref name="array"/>.</param>
 		/// <returns>Whether or not <see cref="string.Equals(string, string, StringComparison)"/> returns <see langword="true"/>,
 		/// for <paramref name="target"/> and at least one element of <paramref name="array"/>, according to <paramref name="options"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array"/> is <see langword="null"/>.</exception>
 		public static bool contains (this string [] array, string target, StringComparison options)
 		{
 			if (array == null)

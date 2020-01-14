@@ -22,6 +22,12 @@ namespace PixelLib.ConsoleHelpers
 		/// </summary>
 		public bool cancelRequested { get; set; }
 
+		/// <summary>
+		/// Creates a new <see cref="PostConsoleInputEventArgs"/>, with <paramref name="consoleUsed"/> as the referenced <see cref="CustomConsole"/>, and <paramref name="consoleInput"/> as the recorded text.
+		/// </summary>
+		/// <param name="consoleUsed">The <see cref="CustomConsole"/> to reference with <see cref="consoleUsed"/>.</param>
+		/// <param name="consoleInput">The text recorded into <see cref="consoleInput"/></param>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="consoleUsed"/> is <see langword="null"/></exception>
 		public PostConsoleInputEventArgs (CustomConsole consoleUsed, string consoleInput)
 		{
 			this.consoleUsed = consoleUsed ?? throw new ArgumentNullException (nameof (consoleUsed), $"Cannot have a null {nameof (consoleUsed)}.");

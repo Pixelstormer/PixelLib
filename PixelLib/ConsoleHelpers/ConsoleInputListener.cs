@@ -2,6 +2,9 @@
 
 namespace PixelLib.ConsoleHelpers
 {
+	/// <summary>
+	/// Helper class for establishing an indefinite user input loop, until an explicit exit request is made.
+	/// </summary>
 	public class ConsoleInputListener
 	{
 		/// <summary>
@@ -16,6 +19,10 @@ namespace PixelLib.ConsoleHelpers
 
 		private CustomConsole console;
 
+		/// <summary>
+		/// Creates a new <see cref="ConsoleInputListener"/>, that listens to <paramref name="console"/>.
+		/// </summary>
+		/// <param name="console">The given <see cref="CustomConsole"/> to listen to.</param>
 		public ConsoleInputListener (CustomConsole console)
 		{
 			this.console = console;
