@@ -30,7 +30,9 @@ namespace PixelLib.ConsoleHelpers
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="consoleUsed"/> is <see langword="null"/></exception>
 		public PostConsoleInputEventArgs (CustomConsole consoleUsed, string consoleInput)
 		{
-			this.consoleUsed = consoleUsed ?? throw new ArgumentNullException (nameof (consoleUsed), $"Cannot have a null {nameof (consoleUsed)}.");
+			if (consoleUsed == null)
+				throw new ArgumentNullException (nameof (consoleUsed), $"Cannot have a null {nameof (consoleUsed)}.");
+			this.consoleUsed = consoleUsed;
 			this.consoleInput = consoleInput;
 		}
 	}
