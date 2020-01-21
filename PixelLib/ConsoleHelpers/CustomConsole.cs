@@ -18,22 +18,22 @@ namespace PixelLib.ConsoleHelpers
 	public class CustomConsole
 	{
 #pragma warning disable IDE1006 // Naming Styles
-		public virtual Encoding InputEncoding { get => Console.InputEncoding; set => Console.InputEncoding = value; }
-		public virtual Encoding OutputEncoding { get => Console.OutputEncoding; set => Console.OutputEncoding = value; }
-		public virtual ConsoleColor BackgroundColour { get => Console.BackgroundColor; set => Console.BackgroundColor = value; }
-		public virtual ConsoleColor ForegroundColour { get => Console.ForegroundColor; set => Console.ForegroundColor = value; }
-		public virtual int BufferWidth { get => Console.BufferWidth; set => Console.BufferWidth = value; }
-		public virtual int BufferHeight { get => Console.BufferHeight; set => Console.BufferHeight = value; }
-		public virtual int WindowWidth { get => Console.WindowWidth; set => Console.WindowWidth = value; }
-		public virtual int WindowHeight { get => Console.WindowHeight; set => Console.WindowHeight = value; }
-		public virtual int WindowLeft { get => Console.WindowLeft; set => Console.WindowLeft = value; }
-		public virtual int WindowTop { get => Console.WindowTop; set => Console.WindowTop = value; }
-		public virtual int CursorLeft { get => Console.CursorLeft; set => Console.CursorLeft = value; }
-		public virtual int CursorTop { get => Console.CursorTop; set => Console.CursorTop = value; }
-		public virtual int CursorSize { get => Console.CursorSize; set => Console.CursorSize = value; }
-		public virtual bool CursorVisible { get => Console.CursorVisible; set => Console.CursorVisible = value; }
-		public virtual bool TreatControlCAsInput { get => Console.TreatControlCAsInput; set => Console.TreatControlCAsInput = value; }
-		public virtual string Title { get => Console.Title; set => Console.Title = value; }
+		public virtual Encoding InputEncoding { get { return Console.InputEncoding; } set { Console.InputEncoding = value; }}
+		public virtual Encoding OutputEncoding { get { return Console.OutputEncoding; } set { Console.OutputEncoding = value; }}
+		public virtual ConsoleColor BackgroundColour { get { return Console.BackgroundColor; } set { Console.BackgroundColor = value; }}
+		public virtual ConsoleColor ForegroundColour { get { return Console.ForegroundColor; } set { Console.ForegroundColor = value; }}
+		public virtual int BufferWidth { get { return Console.BufferWidth; } set { Console.BufferWidth = value; }}
+		public virtual int BufferHeight { get { return Console.BufferHeight; } set { Console.BufferHeight = value; }}
+		public virtual int WindowWidth { get { return Console.WindowWidth; } set { Console.WindowWidth = value; }}
+		public virtual int WindowHeight { get { return Console.WindowHeight; } set { Console.WindowHeight = value; }}
+		public virtual int WindowLeft { get { return Console.WindowLeft; } set { Console.WindowLeft = value; }}
+		public virtual int WindowTop { get { return Console.WindowTop; } set { Console.WindowTop = value; }}
+		public virtual int CursorLeft { get { return Console.CursorLeft; } set { Console.CursorLeft = value; }}
+		public virtual int CursorTop { get { return Console.CursorTop; } set { Console.CursorTop = value; }}
+		public virtual int CursorSize { get { return Console.CursorSize; } set { Console.CursorSize = value; }}
+		public virtual bool CursorVisible { get { return Console.CursorVisible; } set { Console.CursorVisible = value; }}
+		public virtual bool TreatControlCAsInput { get { return Console.TreatControlCAsInput; } set { Console.TreatControlCAsInput = value; }}
+		public virtual string Title { get { return Console.Title; } set { Console.Title = value; }}
 
 		public virtual TextReader In => Console.In;
 		public virtual TextWriter Out => Console.Out;
