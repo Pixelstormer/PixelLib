@@ -70,15 +70,6 @@ namespace PixelLib.ConsoleHelpers
 		{
 			return obj is ColourString other ? Equals (other) : false;
 		}
-
-		/// <summary>
-		/// Compares two <see cref="ColourString"/>s for equality.
-		/// </summary>
-		/// <param name="first">The first <see cref="ColourString"/> to compare.</param>
-		/// <param name="second">The second <see cref="ColourString"/> to compare.</param>
-		/// <returns>Whether or not <paramref name="first"/> and <paramref name="second"/> are equal.</returns>
-		public static bool operator == (ColourString first, ColourString second) => first.Equals (second);
-
 		/// <summary>
 		/// Gets the hash code for this <see cref="ColourString"/>.
 		/// </summary>
@@ -93,12 +84,23 @@ namespace PixelLib.ConsoleHelpers
 		}
 
 		/// <summary>
+		/// Compares two <see cref="ColourString"/>s for equality.
+		/// </summary>
+		/// <param name="first">The first <see cref="ColourString"/> to compare.</param>
+		/// <param name="second">The second <see cref="ColourString"/> to compare.</param>
+		/// <returns>Whether or not <paramref name="first"/> and <paramref name="second"/> are equal.</returns>
+		public static bool operator == (ColourString first, ColourString second) => first.Equals (second);
+
+		/// <summary>
 		/// Compares two <see cref="ColourString"/>s for inequality.
 		/// </summary>
 		/// <param name="first">The first <see cref="ColourString"/> to compare.</param>
 		/// <param name="second">The second <see cref="ColourString"/> to compare.</param>
 		/// <returns>Whether or not <paramref name="first"/> and <paramref name="second"/> are unequal.</returns>
 		public static bool operator != (ColourString first, ColourString second) => !first.Equals (second);
+
+		public static bool operator < (ColourString first, ColourString second) => first.CompareTo (second) < 0;
+		public static bool operator > (ColourString first, ColourString second) => first.CompareTo (second) > 0;
 
 		/// <summary>
 		/// Get an enumerator over the <see cref="char"/>s in <see cref="text"/>.
