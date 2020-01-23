@@ -46,7 +46,7 @@ namespace PixelLib.ConsoleHelpers
 		/// <returns>The value of <see cref="string.Compare(string, string)"/> with the <see cref="text"/> of this and <paramref name="other"/>.</returns>
 		public int CompareTo (ColourString other)
 		{
-			return string.Compare (text, other.text);
+			return string.Compare (text, other.text, StringComparison.Ordinal);
 		}
 
 		/// <summary>
