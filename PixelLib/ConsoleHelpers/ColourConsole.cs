@@ -132,12 +132,12 @@ namespace PixelLib.ConsoleHelpers
 		}
 
 		/// <summary>
-		/// Converts a string to an array of <see cref="ConsoleText"/> structs.
+		/// Converts a string to an array of <see cref="ColourString"/> structs.
 		/// </summary>
 		/// <param name="toFormat">The string to be formatted.</param>
 		/// <param name="args">A params array of <see cref="ConsoleColor"/>s that <paramref name="toFormat"/> can index into.</param>
 		/// <returns></returns>
-		private ConsoleText [] formatString (string toFormat, params ConsoleColor [] args)
+		private ColourString [] formatString (string toFormat, params ConsoleColor [] args)
 		{
 			// If format doesn't specify a ConsoleColour to start with, default to the current colours.
 			if (!toFormat.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (), StringComparison.Ordinal))
@@ -189,8 +189,8 @@ namespace PixelLib.ConsoleHelpers
 			// as it won't be followed by another block starter.
 			stringBlocks.Add (toFormat.Substring (previousIndex));
 
-			// Iterate over the collected blocks and parse them into ConsoleText structs.
-			ConsoleText [] textBlocks = new ConsoleText [stringBlocks.Count];
+			// Iterate over the collected blocks and parse them into ColourString structs.
+			ColourString [] textBlocks = new ColourString [stringBlocks.Count];
 			for (int i = 0; i < textBlocks.Length; ++i)
 				textBlocks [i] = parseBlock (stringBlocks [i], args);
 
@@ -321,17 +321,17 @@ namespace PixelLib.ConsoleHelpers
 		*/
 
 		/// <summary>
-		/// Parses the given <see cref="string"/> into a <see cref="ConsoleText"/> struct.
+		/// Parses the given <see cref="string"/> into a <see cref="ColourString"/> struct.
 		/// </summary>
 		/// <param name="toParse">The <see cref="string"/> to be parsed.</param>
 		/// <param name="args">A params array of <see cref="ConsoleColor"/>s to be indexed into by <paramref name="toParse"/>.</param>
-		/// <returns>A <see cref="ConsoleText"/> struct created from <paramref name="toParse"/>.</returns>
+		/// <returns>A <see cref="ColourString"/> struct created from <paramref name="toParse"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="toParse"/> is <see langword="null"/>.</exception>
 		/// <exception cref="FormatException">Thrown when <paramref name="toParse"/> is not a valid Colour format block.</exception>
-		private ConsoleText parseBlock (string toParse, params ConsoleColor [] args)
+		private ColourString parseBlock (string toParse, params ConsoleColor [] args)
 		{
 			if (toParse == null)
-				throw new ArgumentNullException (nameof (toParse), $"Cannot create a {nameof (ConsoleText)} from a null string.");
+				throw new ArgumentNullException (nameof (toParse), $"Cannot create a {nameof (ColourString)} from a null string.");
 
 			if (!toParse.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (), StringComparison.Ordinal))
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid Block.");
@@ -351,8 +351,8 @@ namespace PixelLib.ConsoleHelpers
 
 			ConsoleColor foregroundColour = colourFromString (foregroundString, true, args);
 			ConsoleColor backgroundColour = colourFromString (backgroundString, false, args);
-
-			return new ConsoleText (foregroundColour, backgroundColour, remainingText);
+			
+			return new ColourString (foregroundColour, backgroundColour, remainingText);
 		}
 
 		/// <summary>
@@ -381,7 +381,7 @@ namespace PixelLib.ConsoleHelpers
 		/// <param name="args">A params array of <see cref="ConsoleColor"/>s that <paramref name="format"/> can index into.</param>
 		public void Write (string format, params ConsoleColor [] args)
 		{
-			foreach (ConsoleText textBlock in formatString (format, args))
+			foreach (ColourString textBlock in formatString (format, args))
 			{
 				stageColours (textBlock.foregroundColour, textBlock.backgroundColour);
 				Write<string> (textBlock.text);
@@ -395,7 +395,7 @@ namespace PixelLib.ConsoleHelpers
 		/// <param name="args">A params array of <see cref="ConsoleColor"/>s that <paramref name="format"/> can index into.</param>
 		public void WriteLine (string format, params ConsoleColor [] args)
 		{
-			foreach (ConsoleText textBlock in formatString (format, args))
+			foreach (ColourString textBlock in formatString (format, args))
 			{
 				stageColours (textBlock.foregroundColour, textBlock.backgroundColour);
 				Write<string> (textBlock.text);
@@ -490,30 +490,6 @@ namespace PixelLib.ConsoleHelpers
 				return colour;
 			else
 				throw new FormatException ($"The {nameof (ConsoleColor)} '{from}' does not exist.");
-		}
-
-		/// <summary>
-		/// Represents a <see cref="string"/> that has a foreground colour and a background colour.
-		/// </summary>
-		private struct ConsoleText : IEquatable<ConsoleText>
-		{
-			public readonly ConsoleColor foregroundColour;
-			public readonly ConsoleColor backgroundColour;
-			public readonly string text;
-
-			public ConsoleText (ConsoleColor foregroundColour, ConsoleColor backgroundColour, string text)
-			{
-				this.foregroundColour = foregroundColour;
-				this.backgroundColour = backgroundColour;
-				this.text = text;
-			}
-
-			public bool Equals (ConsoleText other)
-			{
-				return foregroundColour == other.foregroundColour
-					&& backgroundColour == other.backgroundColour
-					&& string.Equals (text, other.text, StringComparison.Ordinal);
-			}
 		}
 	}
 }

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleHelpers\ColourConsole.cs" />
+    <Compile Include="ConsoleHelpers\ColourString.cs" />
     <Compile Include="ConsoleHelpers\ConsoleInputListener.cs" />
     <Compile Include="ConsoleHelpers\CustomConsole.cs" />
     <Compile Include="ConsoleHelpers\PostConsoleInputEventArgs.cs" />
