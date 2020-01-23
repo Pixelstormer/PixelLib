@@ -80,6 +80,19 @@ namespace PixelLib.ConsoleHelpers
 		public static bool operator == (ColourString first, ColourString second) => first.Equals (second);
 
 		/// <summary>
+		/// Gets the hash code for this <see cref="ColourString"/>.
+		/// </summary>
+		/// <returns>The hash code for this <see cref="ColourString"/>.</returns>
+		public override int GetHashCode ()
+		{
+			int hashCode = -1917421105;
+			hashCode *= -1521134295 + foregroundColour.GetHashCode ();
+			hashCode *= -1521134295 + backgroundColour.GetHashCode ();
+			hashCode *= -1521134295 + text.GetHashCode ();
+			return hashCode;
+		}
+
+		/// <summary>
 		/// Compares two <see cref="ColourString"/>s for inequality.
 		/// </summary>
 		/// <param name="first">The first <see cref="ColourString"/> to compare.</param>
