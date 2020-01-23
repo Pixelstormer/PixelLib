@@ -14,17 +14,17 @@ namespace PixelLib.ConsoleHelpers
 		/// <summary>
 		/// The foreground <see cref="ConsoleColor"/> associated with this <see cref="ColourString"/>.
 		/// </summary>
-		public readonly ConsoleColor foregroundColour;
+		public ConsoleColor foregroundColour { get; }
 
 		/// <summary>
 		/// The background <see cref="ConsoleColor"/> associated with this <see cref="ColourString"/>.
 		/// </summary>
-		public readonly ConsoleColor backgroundColour;
+		public ConsoleColor backgroundColour { get; }
 
 		/// <summary>
 		/// The <see cref="string"/> this <see cref="ColourString"/> represents.
 		/// </summary>
-		public readonly string text;
+		public string text { get; }
 
 		/// <summary>
 		/// Creates a new <see cref="ColourString"/> with the specified <paramref name="foregroundColour"/>, <paramref name="backgroundColour"/> and <paramref name="text"/>.
