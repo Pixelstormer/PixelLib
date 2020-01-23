@@ -7,6 +7,8 @@ namespace PixelLib.ConsoleHelpers
 	/// <summary>
 	/// Represents a <see cref="string"/> that has a foreground and background <see cref="ConsoleColor"/> associated with it.
 	/// </summary>
+	// As this class acts as a string wrapper, suppressing CA1710 is fine because the intent is clear from the current identifier.
+	[System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
 	public struct ColourString : IEquatable<ColourString>, IComparable<ColourString>, IEnumerable<char>
 	{
 		/// <summary>
@@ -58,6 +60,32 @@ namespace PixelLib.ConsoleHelpers
 				&& backgroundColour == other.backgroundColour
 				&& string.Equals (text, other.text, StringComparison.Ordinal);
 		}
+
+		/// <summary>
+		/// Compares this <see cref="ColourString"/> with <paramref name="obj"/> for equality.
+		/// </summary>
+		/// <param name="obj">The <see cref="object"/> to compare this to.</param>
+		/// <returns>Whether or not this <see cref="ColourString"/> and <paramref name="obj"/> are equal.</returns>
+		public override bool Equals (object obj)
+		{
+			return obj is ColourString other ? Equals (other) : false;
+		}
+
+		/// <summary>
+		/// Compares two <see cref="ColourString"/>s for equality.
+		/// </summary>
+		/// <param name="first">The first <see cref="ColourString"/> to compare.</param>
+		/// <param name="second">The second <see cref="ColourString"/> to compare.</param>
+		/// <returns>Whether or not <paramref name="first"/> and <paramref name="second"/> are equal.</returns>
+		public static bool operator == (ColourString first, ColourString second) => first.Equals (second);
+
+		/// <summary>
+		/// Compares two <see cref="ColourString"/>s for inequality.
+		/// </summary>
+		/// <param name="first">The first <see cref="ColourString"/> to compare.</param>
+		/// <param name="second">The second <see cref="ColourString"/> to compare.</param>
+		/// <returns>Whether or not <paramref name="first"/> and <paramref name="second"/> are unequal.</returns>
+		public static bool operator != (ColourString first, ColourString second) => !first.Equals (second);
 
 		/// <summary>
 		/// Get an enumerator over the <see cref="char"/>s in <see cref="text"/>.
