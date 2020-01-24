@@ -477,18 +477,16 @@ namespace PixelLib.ConsoleHelpers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]
 		private static ConsoleColor colourFromString (string from, params ConsoleColor [] args)
 		{
-			int paramsIndex;
-			ConsoleColor colour;
 			if (string.IsNullOrWhiteSpace (from))
 				throw new ArgumentException ($"Cannot create a {nameof (ConsoleColor)} from the string '{from}': String cannot be null, empty or whitespace.", nameof (from));
-			else if (int.TryParse (from, out paramsIndex))
+			else if (int.TryParse (from, out int paramsIndex))
 			{
 				try
 				{ return args [paramsIndex]; }
 				catch (IndexOutOfRangeException e)
 				{ throw new FormatException ($"The index {paramsIndex} specified by the string '{from}' was not a valid index for the params array.", e); }
 			}
-			else if (Enum.TryParse (from, true, out colour))
+			else if (Enum.TryParse (from, true, out ConsoleColor colour))
 				return colour;
 			else
 				throw new FormatException ($"The {nameof (ConsoleColor)} '{from}' does not exist.");
