@@ -13,7 +13,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany ("Pixelstorm")]
 [assembly: AssemblyProduct ("PixelLib")]
 [assembly: AssemblyCopyright ("Copyright © Pixelstorm 2020")]
-[assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 
 #if DEBUG
