@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Resources;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant (true)]
@@ -14,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("Pixelstorm")]
 [assembly: AssemblyProduct ("PixelLib")]
-[assembly: AssemblyCopyright ("Copyright © Pixelstorm 2019")]
+[assembly: AssemblyCopyright ("Copyright © Pixelstorm 2020")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 
