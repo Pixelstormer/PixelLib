@@ -70,6 +70,7 @@ namespace PixelLib.ConsoleHelpers
 		{
 			return obj is ColourString other ? Equals (other) : false;
 		}
+
 		/// <summary>
 		/// Gets the hash code for this <see cref="ColourString"/>.
 		/// </summary>
