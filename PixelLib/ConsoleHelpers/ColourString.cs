@@ -68,8 +68,11 @@ namespace PixelLib.ConsoleHelpers
 		/// <returns>Whether or not this <see cref="ColourString"/> and <paramref name="obj"/> are equal.</returns>
 		public override bool Equals (object obj)
 		{
-			return obj is ColourString other ? Equals (other) : false;
+			if (obj is ColourString)
+				return Equals ((ColourString) obj);
+			return false;
 		}
+
 		/// <summary>
 		/// Gets the hash code for this <see cref="ColourString"/>.
 		/// </summary>
