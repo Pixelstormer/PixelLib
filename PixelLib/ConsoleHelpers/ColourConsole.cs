@@ -339,8 +339,8 @@ namespace PixelLib.ConsoleHelpers
 			if (!toParse.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (CultureInfo.InvariantCulture), StringComparison.Ordinal))
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid Block.");
 
-			int blockEndIndex = toParse.IndexOf (STRINGFORMAT_ENDBLOCK);
-			int blockSepIndex = toParse.IndexOf (STRINGFORMAT_COLOURSEP);
+			int blockEndIndex = toParse.IndexOf (STRINGFORMAT_ENDBLOCK, StringComparison.Ordinal);
+			int blockSepIndex = toParse.IndexOf (STRINGFORMAT_COLOURSEP, StringComparison.Ordinal);
 
 			if (blockEndIndex == -1)
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid block.");
