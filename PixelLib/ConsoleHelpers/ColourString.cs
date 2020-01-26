@@ -102,6 +102,8 @@ namespace PixelLib.ConsoleHelpers
 
 		public static bool operator < (ColourString first, ColourString second) => first.CompareTo (second) < 0;
 		public static bool operator > (ColourString first, ColourString second) => first.CompareTo (second) > 0;
+		public static bool operator <= (ColourString left, ColourString right) => left.CompareTo (right) <= 0;
+		public static bool operator >= (ColourString left, ColourString right) => left.CompareTo (right) >= 0;
 
 		/// <summary>
 		/// Get an enumerator over the <see cref="char"/>s in <see cref="text"/>.
