@@ -87,21 +87,21 @@ namespace PixelLib.ConsoleHelpers
 		/// <summary>
 		/// Compares two <see cref="ColourString"/>s for equality.
 		/// </summary>
-		/// <param name="first">The first <see cref="ColourString"/> to compare.</param>
-		/// <param name="second">The second <see cref="ColourString"/> to compare.</param>
-		/// <returns>Whether or not <paramref name="first"/> and <paramref name="second"/> are equal.</returns>
-		public static bool operator == (ColourString first, ColourString second) => first.Equals (second);
+		/// <param name="left">The first <see cref="ColourString"/> to compare.</param>
+		/// <param name="right">The second <see cref="ColourString"/> to compare.</param>
+		/// <returns>Whether or not <paramref name="left"/> and <paramref name="right"/> are equal.</returns>
+		public static bool operator == (ColourString left, ColourString right) => left.Equals (right);
 
 		/// <summary>
 		/// Compares two <see cref="ColourString"/>s for inequality.
 		/// </summary>
-		/// <param name="first">The first <see cref="ColourString"/> to compare.</param>
-		/// <param name="second">The second <see cref="ColourString"/> to compare.</param>
-		/// <returns>Whether or not <paramref name="first"/> and <paramref name="second"/> are unequal.</returns>
-		public static bool operator != (ColourString first, ColourString second) => !first.Equals (second);
+		/// <param name="left">The first <see cref="ColourString"/> to compare.</param>
+		/// <param name="right">The second <see cref="ColourString"/> to compare.</param>
+		/// <returns>Whether or not <paramref name="left"/> and <paramref name="right"/> are unequal.</returns>
+		public static bool operator != (ColourString left, ColourString right) => !left.Equals (right);
 
-		public static bool operator < (ColourString first, ColourString second) => first.CompareTo (second) < 0;
-		public static bool operator > (ColourString first, ColourString second) => first.CompareTo (second) > 0;
+		public static bool operator < (ColourString left, ColourString right) => left.CompareTo (right) < 0;
+		public static bool operator > (ColourString left, ColourString right) => left.CompareTo (right) > 0;
 		public static bool operator <= (ColourString left, ColourString right) => left.CompareTo (right) <= 0;
 		public static bool operator >= (ColourString left, ColourString right) => left.CompareTo (right) >= 0;
 
