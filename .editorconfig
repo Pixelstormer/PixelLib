@@ -1,7 +1,7 @@
 ﻿[*.cs]
 
-# CA1707: Identifiers should not contain underscores
+# CA1707: Identifiers should not contain underscores - Personal naming styles permit underscores in Constant identifiers.
 dotnet_diagnostic.CA1707.severity = none
 
-# CA1303: Do not pass literals as localized parameters
+# CA1303: Do not pass literals as localized parameters - Being monolingual, attempting to fix this would be far too much work for little/no benefit.
 dotnet_diagnostic.CA1303.severity = none
