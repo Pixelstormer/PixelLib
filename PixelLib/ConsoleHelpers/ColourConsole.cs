@@ -139,6 +139,8 @@ namespace PixelLib.ConsoleHelpers
 		/// <returns></returns>
 		private ColourString [] formatString (string toFormat, params ConsoleColor [] args)
 		{
+			toFormat ??= "";
+
 			// If format doesn't specify a ConsoleColour to start with, default to the current colours.
 			if (!toFormat.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (), StringComparison.Ordinal))
 				toFormat = Invariant ($"{{{ForegroundColour.ToString ()}:{BackgroundColour.ToString ()}}}") + toFormat;
