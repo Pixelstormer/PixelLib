@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using static System.FormattableString;
 
 namespace PixelLib.ConsoleHelpers
@@ -142,7 +143,7 @@ namespace PixelLib.ConsoleHelpers
 			toFormat ??= "";
 
 			// If format doesn't specify a ConsoleColour to start with, default to the current colours.
-			if (!toFormat.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (), StringComparison.Ordinal))
+			if (!toFormat.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (CultureInfo.InvariantCulture), StringComparison.Ordinal))
 				toFormat = Invariant ($"{{{ForegroundColour.ToString ()}:{BackgroundColour.ToString ()}}}") + toFormat;
 
 			// Make an estimate of how many blocks there are going to be.
@@ -335,7 +336,7 @@ namespace PixelLib.ConsoleHelpers
 			if (toParse == null)
 				throw new ArgumentNullException (nameof (toParse), $"Cannot create a {nameof (ColourString)} from a null string.");
 
-			if (!toParse.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (), StringComparison.Ordinal))
+			if (!toParse.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (CultureInfo.InvariantCulture), StringComparison.Ordinal))
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid Block.");
 
 			int blockEndIndex = toParse.IndexOf (STRINGFORMAT_ENDBLOCK);
