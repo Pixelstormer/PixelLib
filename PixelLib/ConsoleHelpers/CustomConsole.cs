@@ -35,9 +35,11 @@ namespace PixelLib.ConsoleHelpers
 		public virtual bool TreatControlCAsInput { get => Console.TreatControlCAsInput; set => Console.TreatControlCAsInput = value; }
 		public virtual string Title { get => Console.Title; set => Console.Title = value; }
 
+#pragma warning disable CA1716 // Identifiers should not match keywords - `In` and `Error` are direct mirrors of System.Console field identifiers.
 		public virtual TextReader In => Console.In;
 		public virtual TextWriter Out => Console.Out;
 		public virtual TextWriter Error => Console.Error;
+#pragma warning restore CA1716 // Identifiers should not match keywords
 		public virtual int LargestWindowWidth => Console.LargestWindowWidth;
 		public virtual int LargestWindowHeight => Console.LargestWindowHeight;
 		public virtual bool IsInputRedirected => Console.IsInputRedirected;
