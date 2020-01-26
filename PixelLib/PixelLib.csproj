@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Pixelstorm</Authors>
+    <Description>Miscellaneous C# library</Description>
+    <Copyright>Copyright © Pixelstorm 2020</Copyright>
+    <NeutralLanguage>en-GB</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
