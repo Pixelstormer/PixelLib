@@ -17,7 +17,7 @@ namespace PixelLib.ConsoleHelpers
 	/// </remarks>
 	public class CustomConsole
 	{
-#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable IDE1006 // Naming Styles - Identifiers are exact mirrors of System.Console's identifiers
 		public virtual Encoding InputEncoding { get => Console.InputEncoding; set => Console.InputEncoding = value; }
 		public virtual Encoding OutputEncoding { get => Console.OutputEncoding; set => Console.OutputEncoding = value; }
 		public virtual ConsoleColor BackgroundColour { get => Console.BackgroundColor; set => Console.BackgroundColor = value; }
@@ -86,7 +86,7 @@ namespace PixelLib.ConsoleHelpers
 
 		public CustomConsole () { Console.CancelKeyPress += onRaiseConsoleCancelKeyPress; }
 
-#pragma warning disable IDE0022 // Use block body for methods
+#pragma warning disable IDE0022 // Use block body for methods - With a huge amount of tiny methods, using lambdas over full block bodies is much cleaner and neater.
 		protected virtual void onRaiseConsoleCancelKeyPress (object sender, ConsoleCancelEventArgs e) => CancelKeyPress?.Invoke (sender, e);
 		protected virtual void onPreWriteEvent () => preWriteEvent?.Invoke (this, EventArgs.Empty);
 		protected virtual void onPostWriteEvent () => postWriteEvent?.Invoke (this, EventArgs.Empty);
