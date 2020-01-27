@@ -80,7 +80,7 @@ namespace PixelLib.ConsoleHelpers
 			int hashCode = -1917421105;
 			hashCode *= -1521134295 + foregroundColour.GetHashCode ();
 			hashCode *= -1521134295 + backgroundColour.GetHashCode ();
-			hashCode *= -1521134295 + text.GetHashCode ();
+			hashCode *= -1521134295 + text.GetHashCode (StringComparison.Ordinal);
 			return hashCode;
 		}
 

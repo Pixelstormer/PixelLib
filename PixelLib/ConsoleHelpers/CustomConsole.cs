@@ -17,7 +17,7 @@ namespace PixelLib.ConsoleHelpers
 	/// </remarks>
 	public class CustomConsole
 	{
-#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable IDE1006 // Naming Styles - Identifiers are exact mirrors of System.Console's identifiers
 		public virtual Encoding InputEncoding { get => Console.InputEncoding; set => Console.InputEncoding = value; }
 		public virtual Encoding OutputEncoding { get => Console.OutputEncoding; set => Console.OutputEncoding = value; }
 		public virtual ConsoleColor BackgroundColour { get => Console.BackgroundColor; set => Console.BackgroundColor = value; }
@@ -35,9 +35,11 @@ namespace PixelLib.ConsoleHelpers
 		public virtual bool TreatControlCAsInput { get => Console.TreatControlCAsInput; set => Console.TreatControlCAsInput = value; }
 		public virtual string Title { get => Console.Title; set => Console.Title = value; }
 
+#pragma warning disable CA1716 // Identifiers should not match keywords - `In` and `Error` are direct mirrors of System.Console field identifiers.
 		public virtual TextReader In => Console.In;
 		public virtual TextWriter Out => Console.Out;
 		public virtual TextWriter Error => Console.Error;
+#pragma warning restore CA1716 // Identifiers should not match keywords
 		public virtual int LargestWindowWidth => Console.LargestWindowWidth;
 		public virtual int LargestWindowHeight => Console.LargestWindowHeight;
 		public virtual bool IsInputRedirected => Console.IsInputRedirected;
@@ -46,7 +48,7 @@ namespace PixelLib.ConsoleHelpers
 		public virtual bool KeyAvailable => Console.KeyAvailable;
 		public virtual bool NumberLock => Console.NumberLock;
 		public virtual bool CapsLock => Console.CapsLock;
-		
+
 		/// <summary>
 		/// Invoked whenever the <see cref="Console.CancelKeyPress"/> event is invoked, by default.
 		/// </summary>
@@ -84,7 +86,7 @@ namespace PixelLib.ConsoleHelpers
 
 		public CustomConsole () { Console.CancelKeyPress += onRaiseConsoleCancelKeyPress; }
 
-#pragma warning disable IDE0022 // Use block body for methods
+#pragma warning disable IDE0022 // Use block body for methods - With a huge amount of tiny methods, using lambdas over full block bodies is much cleaner and neater.
 		protected virtual void onRaiseConsoleCancelKeyPress (object sender, ConsoleCancelEventArgs e) => CancelKeyPress?.Invoke (sender, e);
 		protected virtual void onPreWriteEvent () => preWriteEvent?.Invoke (this, EventArgs.Empty);
 		protected virtual void onPostWriteEvent () => postWriteEvent?.Invoke (this, EventArgs.Empty);

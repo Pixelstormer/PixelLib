@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using static System.FormattableString;
 
 namespace PixelLib.ConsoleHelpers
@@ -28,7 +29,7 @@ namespace PixelLib.ConsoleHelpers
 		/// Indicates the end of the Foreground colour definition and the start of the Background colour definition within a colour format block, unless escaped by a <see cref="STRINGFORMAT_ENDBLOCK"/> char.
 		/// </summary>
 		public const char STRINGFORMAT_COLOURSEP = ':';
-		
+
 		/// <summary>
 		/// The default-default foreground colour, used as the default foreground colour if none is passed to the constructor.
 		/// </summary>
@@ -38,7 +39,7 @@ namespace PixelLib.ConsoleHelpers
 		/// The default-default background colour, used as the default background colour if none is passed to the constructor.
 		/// </summary>
 		private const ConsoleColor DEFAULT_BACKGROUNDCOLOUR = ConsoleColor.Black;
-		
+
 		/// <summary>
 		/// The default foreground colour, as passed into the constructor. Used when <see cref="ResetColour"/> is called.
 		/// </summary>
@@ -93,7 +94,7 @@ namespace PixelLib.ConsoleHelpers
 			postWriteEvent += handlePostWriteOperation;
 			postWriteLineEvent += handlePostWriteOperation;
 		}
-		
+
 #pragma warning disable IDE0022 // Use block body for methods - Methods that do nothing but call another method can be simplified.
 		private void handlePreWriteOperation (object sender, EventArgs e) => stageColours (ForegroundColour, BackgroundColour);
 		private void handlePostWriteOperation (object sender, EventArgs e) => unstageColours ();
@@ -139,10 +140,12 @@ namespace PixelLib.ConsoleHelpers
 		/// <returns></returns>
 		private ColourString [] formatString (string toFormat, params ConsoleColor [] args)
 		{
+			toFormat ??= "";
+
 			// If format doesn't specify a ConsoleColour to start with, default to the current colours.
-			if (!toFormat.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (), StringComparison.Ordinal))
+			if (!toFormat.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (CultureInfo.InvariantCulture), StringComparison.Ordinal))
 				toFormat = Invariant ($"{{{ForegroundColour.ToString ()}:{BackgroundColour.ToString ()}}}") + toFormat;
-			
+
 			// Make an estimate of how many blocks there are going to be.
 			List<string> stringBlocks = new List<string> (Math.Max (args.Length, 2));
 
@@ -170,7 +173,7 @@ namespace PixelLib.ConsoleHelpers
 							break;
 
 						case STRINGFORMAT_STARTBLOCK:
-							string block = toFormat.Substring (previousIndex, i - previousIndex);
+							string block = toFormat [previousIndex .. i];
 
 							// Remove all of the escape chars in this block, and clear the list for the next block.
 							foreach (int index in escapeIndexes)
@@ -197,129 +200,6 @@ namespace PixelLib.ConsoleHelpers
 			return textBlocks;
 		}
 
-		/* OLD FORMATSTRING METHOD.
-		List<string> blocks = new List<string> (args.Length);
-		List<(ConsoleColor foreground, ConsoleColor background)> blockColours = new List<(ConsoleColor foreground, ConsoleColor background)> (args.Length);
-
-		bool inColourBlock = false;
-		bool escapeNextChar = false;
-		bool foundSeparator = false;
-
-		string currentBlock = "";
-
-		(ConsoleColor foreground, ConsoleColor background) currentColours = (ForegroundColour, BackgroundColour);
-
-		for (int i = 0; i < toFormat.Length; i++)
-		{
-			char currentChar = toFormat[i];
-
-			if (escapeNextChar)
-			{
-				currentBlock += currentChar;
-				escapeNextChar = false;
-			}
-			else
-			{
-				switch (currentChar)
-				{
-					case STRINGFORMAT_ESCAPE:
-						if (inColourBlock)
-							throw new FormatException (Invariant($"{nameof (formatString)} received bad format string: '{toFormat}'. (Got {nameof (STRINGFORMAT_ESCAPE)} char ('{STRINGFORMAT_ESCAPE}') while in a block at index: {i}."));
-						escapeNextChar = true;
-						break;
-							
-					case STRINGFORMAT_STARTBLOCK:
-						if (inColourBlock)
-							throw new FormatException (Invariant ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Got {nameof (STRINGFORMAT_STARTBLOCK)} char ('{STRINGFORMAT_STARTBLOCK}') while already in a block at index: {i}.)"));
-						inColourBlock = true;
-						if (i != 0)
-							blockStrings.Add (currentBlock);
-						currentBlock = "";
-						break;
-
-					case STRINGFORMAT_COLOURSEP:
-						if (foundSeparator)
-							throw new FormatException (Invariant ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Got additional {nameof (STRINGFORMAT_COLOURSEP)} char before reaching end of block at index {i}.)"));
-
-						if (inColourBlock)
-						{
-							if (string.IsNullOrWhiteSpace (currentBlock))
-								currentColours.foreground = ForegroundColour;
-							else if (int.TryParse (currentBlock, out int paramsIndex))
-							{
-								try
-								{ currentColours.foreground = args[paramsIndex]; }
-								catch (IndexOutOfRangeException e)
-								{ throw new FormatException (Invariant ($"{nameof (formatString)} recieved bad format string: '{toFormat}'. (Specified {nameof (args)} index '{paramsIndex}' is out of range at index {i}.)"), e); }
-							}
-							else if (Enum.TryParse (currentBlock, true, out ConsoleColor colour))
-								currentColours.foreground = colour;
-							else
-								throw new FormatException (Invariant ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Got invalid Colour Block: '{currentBlock}' at index: {i}.)"));
-
-							currentBlock = "";
-							foundSeparator = true;
-						}
-						else
-							currentBlock += currentChar;
-						break;
-
-					case STRINGFORMAT_ENDBLOCK:
-						if (!inColourBlock)
-							throw new FormatException (Invariant ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Got {nameof (STRINGFORMAT_ENDBLOCK)} char ('{STRINGFORMAT_ENDBLOCK}') while not in a block at index: {i}."));
-
-						if (!foundSeparator)
-							throw new FormatException (Invariant ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Got {nameof (STRINGFORMAT_ENDBLOCK)} char ('{STRINGFORMAT_ENDBLOCK}') before finding a {nameof (STRINGFORMAT_COLOURSEP)} char ('{STRINGFORMAT_COLOURSEP}') at index {i}.)"));
-
-						if (string.IsNullOrWhiteSpace (currentBlock))
-							currentColours.background = BackgroundColour;
-						else if (int.TryParse (currentBlock, out int paramsIndex))
-						{
-							try
-							{ currentColours.background = args[paramsIndex]; }
-							catch (IndexOutOfRangeException e)
-							{ throw new FormatException (Invariant ($"{nameof (formatString)} recieved bad format string: '{toFormat}'. (Specified {nameof (args)} index '{paramsIndex}' is out of range at index {i}.)"), e); }
-						}
-						else if (Enum.TryParse (currentBlock, true, out ConsoleColor colour))
-							currentColours.background = colour;
-						else
-							throw new FormatException (Invariant ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Got invalid Colour Block: '{currentBlock}' at index: {i}.)"));
-
-						blockColours.Add (currentColours);
-						currentBlock = "";
-						inColourBlock = false;
-						foundSeparator = false;
-						break;
-
-					default:
-						currentBlock += currentChar;
-						break;
-				}
-			}
-		}
-
-		if (inColourBlock)
-			throw new FormatException ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Reached end of string while still in block.)");
-
-		if (string.IsNullOrEmpty (currentBlock))
-			throw new FormatException ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Block at end of string had no following chars.)");
-
-		blockStrings.Add (currentBlock);
-
-		if (blockStrings.Count != blockColours.Count)
-			throw new FormatException (Invariant ($"{nameof (formatString)} received bad format string: '{toFormat}'. (Got unequal number of Colour Blocks ({blockColours.Count}) and Text Blocks ({blockStrings.Count}).)"));
-
-		((ConsoleColor foreground, ConsoleColor background) colours, string text)[] result = new ((ConsoleColor foreground, ConsoleColor background), string)[blockStrings.Count];
-
-		for (int i = 0; i < blockStrings.Count; i++)
-		{
-			result[i].colours = blockColours[i];
-			result[i].text = blockStrings[i];
-		}
-
-		return result;
-		*/
-
 		/// <summary>
 		/// Parses the given <see cref="string"/> into a <see cref="ColourString"/> struct.
 		/// </summary>
@@ -333,11 +213,11 @@ namespace PixelLib.ConsoleHelpers
 			if (toParse == null)
 				throw new ArgumentNullException (nameof (toParse), $"Cannot create a {nameof (ColourString)} from a null string.");
 
-			if (!toParse.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (), StringComparison.Ordinal))
+			if (!toParse.StartsWith (STRINGFORMAT_STARTBLOCK.ToString (CultureInfo.InvariantCulture), StringComparison.Ordinal))
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid Block.");
 
-			int blockEndIndex = toParse.IndexOf (STRINGFORMAT_ENDBLOCK);
-			int blockSepIndex = toParse.IndexOf (STRINGFORMAT_COLOURSEP);
+			int blockEndIndex = toParse.IndexOf (STRINGFORMAT_ENDBLOCK, StringComparison.Ordinal);
+			int blockSepIndex = toParse.IndexOf (STRINGFORMAT_COLOURSEP, StringComparison.Ordinal);
 
 			if (blockEndIndex == -1)
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid block.");
@@ -345,13 +225,13 @@ namespace PixelLib.ConsoleHelpers
 			if (blockSepIndex == -1 || blockSepIndex >= blockEndIndex)
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid block.");
 
-			string foregroundString = toParse.Substring (1, blockSepIndex - 1);
-			string backgroundString = toParse.Substring (blockSepIndex + 1, blockEndIndex - blockSepIndex - 1);
-			string remainingText = toParse.Substring (blockEndIndex + 1);
+			string foregroundString = toParse [1 .. blockSepIndex];
+			string backgroundString = toParse [(blockSepIndex + 1) .. (blockEndIndex - blockSepIndex - 1)];
+			string remainingText = toParse [(blockEndIndex + 1) ..];
 
 			ConsoleColor foregroundColour = colourFromString (foregroundString, true, args);
 			ConsoleColor backgroundColour = colourFromString (backgroundString, false, args);
-			
+
 			return new ColourString (foregroundColour, backgroundColour, remainingText);
 		}
 
