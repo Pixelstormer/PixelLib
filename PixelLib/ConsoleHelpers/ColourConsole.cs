@@ -173,7 +173,7 @@ namespace PixelLib.ConsoleHelpers
 							break;
 
 						case STRINGFORMAT_STARTBLOCK:
-							string block = toFormat.Substring (previousIndex, i - previousIndex);
+							string block = toFormat [previousIndex .. i];
 
 							// Remove all of the escape chars in this block, and clear the list for the next block.
 							foreach (int index in escapeIndexes)
@@ -348,9 +348,10 @@ namespace PixelLib.ConsoleHelpers
 			if (blockSepIndex == -1 || blockSepIndex >= blockEndIndex)
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid block.");
 
-			string foregroundString = toParse.Substring (1, blockSepIndex - 1);
-			string backgroundString = toParse.Substring (blockSepIndex + 1, blockEndIndex - blockSepIndex - 1);
-			string remainingText = toParse.Substring (blockEndIndex + 1);
+			string foregroundString = toParse [1 .. blockSepIndex];
+			string backgroundString = toParse [(blockSepIndex + 1) .. (blockEndIndex - blockSepIndex - 1)];
+			//string backgroundString = toParse.Substring (blockSepIndex + 1, blockEndIndex - blockSepIndex - 1);
+			string remainingText = toParse [(blockEndIndex + 1) ..];
 
 			ConsoleColor foregroundColour = colourFromString (foregroundString, true, args);
 			ConsoleColor backgroundColour = colourFromString (backgroundString, false, args);
