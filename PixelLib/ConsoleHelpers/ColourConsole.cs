@@ -224,9 +224,9 @@ namespace PixelLib.ConsoleHelpers
 
 			if (blockSepIndex == -1 || blockSepIndex >= blockEndIndex)
 				throw new FormatException ($"Invalid format string: '{toParse}'. String does not start with a valid block.");
-
+			
 			string foregroundString = toParse [1 .. blockSepIndex];
-			string backgroundString = toParse [(blockSepIndex + 1) .. (blockEndIndex - blockSepIndex - 1)];
+			string backgroundString = toParse [(blockSepIndex + 1) .. blockEndIndex];
 			string remainingText = toParse [(blockEndIndex + 1) ..];
 
 			ConsoleColor foregroundColour = colourFromString (foregroundString, true, args);
