@@ -69,5 +69,41 @@ namespace PixelLib.ExtensionMethods
 					return true;
 			return false;
 		}
+
+		/// <summary>
+		/// Attempts to cast all of the elements in <paramref name="array"/> to type <typeparamref name="T"/>, inserting the results into <paramref name="outArray"/>.
+		/// </summary>
+		/// <remarks>If this method returns <see langword="true"/>, <paramref name="outArray"/> will be filled with the elements of <paramref name="array"/>, cast to type <typeparamref name="T"/>.
+		/// If <paramref name="outArray"/> has a greater length than <paramref name="array"/>, it will only be filled up to the length of <paramref name="array"/>; further elements will remain untouched.
+		/// If this method returns <see langword="false"/>, <paramref name="outArray"/> will be set to a <see langword="null"/> reference.</remarks>
+		/// <typeparam name="T">The type to attempt to cast to.</typeparam>
+		/// <param name="array">The array of <see cref="object"/>s to attempt to cast the elements of.</param>
+		/// <param name="outArray">If the method returns <see langword="true"/>, this array will be filled with the elements of <paramref name="array"/>, cast to type <typeparamref name="T"/>. Otherwise, it will be set to a <see langword="null"/> reference.</param>
+		/// <returns>Whether or not every element in <paramref name="array"/> could be cast to <typeparamref name="T"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Thrown when <paramref name="outArray"/> has a smaller length than <paramref name="array"/>.</exception>
+		public static bool cast<T> (this object [] array, ref T [] outArray)
+		{
+			if (array == null)
+				throw new ArgumentNullException (nameof (array), "Cannot cast the contents of a null array.");
+
+			outArray ??= new T [array.Length];
+
+			if (outArray.Length < array.Length)
+				throw new ArgumentException ("The output array cannot be smaller than the input array.", nameof (outArray));
+
+			for (int i = 0; i < array.Length; ++i)
+			{
+				if (array [i] is T)
+					outArray [i] = (T) array [i];
+				else
+				{
+					outArray = null;
+					return false;
+				}
+			}
+			
+			return true;
+		}
 	}
 }
