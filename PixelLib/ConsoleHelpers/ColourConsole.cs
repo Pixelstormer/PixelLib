@@ -268,6 +268,28 @@ namespace PixelLib.ConsoleHelpers
 			}
 		}
 
+		public override void Write (string format, params object [] arg)
+		{
+			ConsoleColor [] colours = new ConsoleColor [arg.Length];
+
+			bool foundNonColour = false;
+			for (int i = 0; i < arg.Length; ++i)
+			{
+				if (arg [i] is ConsoleColor)
+					colours [i] = (ConsoleColor) arg [i];
+				else
+				{
+					foundNonColour = true;
+					break;
+				}
+			}
+
+			if (foundNonColour)
+				base.Write (format, arg);
+			else
+				Write (format, colours);
+		}
+
 		/// <summary>
 		/// Writes the colour-formatted representation of the specified <see cref="string"/> value to the standard output stream, followed by the current line terminator.
 		/// </summary>
@@ -282,6 +304,28 @@ namespace PixelLib.ConsoleHelpers
 			}
 
 			WriteLine ();
+		}
+
+		public override void WriteLine (string format, params object [] arg)
+		{
+			ConsoleColor [] colours = new ConsoleColor [arg.Length];
+
+			bool foundNonColour = false;
+			for (int i = 0; i < arg.Length; ++i)
+			{
+				if (arg [i] is ConsoleColor)
+					colours [i] = (ConsoleColor) arg [i];
+				else
+				{
+					foundNonColour = true;
+					break;
+				}
+			}
+
+			if (foundNonColour)
+				base.WriteLine (format, arg);
+			else
+				WriteLine (format, colours);
 		}
 
 		/// <summary>
