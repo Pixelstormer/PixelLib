@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using PixelLib.ExtensionMethods;
 using static System.FormattableString;
 
 namespace PixelLib.ConsoleHelpers
@@ -271,23 +272,10 @@ namespace PixelLib.ConsoleHelpers
 		public override void Write (string format, params object [] arg)
 		{
 			ConsoleColor [] colours = new ConsoleColor [arg.Length];
-
-			bool foundNonColour = false;
-			for (int i = 0; i < arg.Length; ++i)
-			{
-				if (arg [i] is ConsoleColor)
-					colours [i] = (ConsoleColor) arg [i];
-				else
-				{
-					foundNonColour = true;
-					break;
-				}
-			}
-
-			if (foundNonColour)
-				base.Write (format, arg);
-			else
+			if (arg.cast (ref colours))
 				Write (format, colours);
+			else
+				base.Write (format, arg);
 		}
 
 		/// <summary>
@@ -309,23 +297,10 @@ namespace PixelLib.ConsoleHelpers
 		public override void WriteLine (string format, params object [] arg)
 		{
 			ConsoleColor [] colours = new ConsoleColor [arg.Length];
-
-			bool foundNonColour = false;
-			for (int i = 0; i < arg.Length; ++i)
-			{
-				if (arg [i] is ConsoleColor)
-					colours [i] = (ConsoleColor) arg [i];
-				else
-				{
-					foundNonColour = true;
-					break;
-				}
-			}
-
-			if (foundNonColour)
-				base.WriteLine (format, arg);
-			else
+			if (arg.cast (ref colours))
 				WriteLine (format, colours);
+			else
+				base.WriteLine (format, arg);
 		}
 
 		/// <summary>
